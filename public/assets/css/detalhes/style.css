@@ -1,0 +1,39 @@
+body {
+    margin: 0;
+    background: #ffffff;
+    color: #222;
+}
+
+header {
+    padding: 16px 24px;
+}
+
+header a {
+    text-decoration: none;
+    color: #555;
+}
+
+img {
+    width: 260px;
+    height: 260px;
+    object-fit: cover;
+}
+
+.details-price {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.details-stock {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.em-estoque {
+    color: #2a9d5c;
+}
+
+.indisponivel {
+    color: #c0392b;
+}

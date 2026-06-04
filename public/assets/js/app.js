@@ -1,25 +1,3 @@
-# DWFE-Semana15-AtividadePratica-IntegracaoLogin
-Personalização do site com Integração de Login de Usuário
-
-## Informações Gerais
-
-- Nome: Sara da Cruz Freitas
-- Matricula: 907539
-
-## Prints
-
-- Tela da Home-page:
-![Print](Homepage.png)
-
-- Tela de Detalhes:
-![Print](Detalhes.png)
-
-- Tela de Gráfico por Categoria:
-![Print](Grafico.png)
-
-## Estrutura do JSON
-
-```js
 const data = {
     produtos: [
         {
@@ -96,4 +74,128 @@ const data = {
         }
     ]
 };
-```
+
+function formatPrice(preco) {
+    return `R$ ${preco.toFixed(2)}`;
+}
+
+const productDetails = document.getElementById("product-details");
+
+if (productDetails && !document.getElementById("product-list")) {
+    const params = new URLSearchParams(window.location.search);
+    const id = Number(params.get("id"));
+    const produto = data.produtos.find(p => p.id === id);
+
+    if (produto) {
+        productDetails.innerHTML = `
+            <img src="${produto.imagem}" alt="${produto.nome}">
+            <div>
+                <span>${produto.categoria}</span>
+                <h2>${produto.nome}</h2>
+                <p>${produto.descricao}</p>
+                <p class="details-price">${formatPrice(produto.preco)}</p>
+                <p class="details-stock ${produto.emEstoque ? 'em-estoque' : 'indisponivel'}">
+                    ${produto.emEstoque ? "Em estoque" : "Indisponível"}
+                </p>
+            </div>
+        `;
+    } else {
+        productDetails.innerHTML = "<p>Produto não encontrado.</p>";
+    }
+}
+
+const productList = document.getElementById("product-list");
+
+if (productList) {
+    const searchInput = document.querySelector("#search");
+    const categorySelect = document.querySelector("#category");
+    const btnRender = document.getElementById("btnRender");
+
+    function createProductCard(produto) {
+        const card = document.createElement("div");
+        card.classList.add("card");
+        card.setAttribute("data-id", produto.id);
+
+        card.style.border = "1px solid #ccc";
+        card.style.padding = "10px";
+        card.style.margin = "10px";
+        card.style.width = "200px";
+        card.style.transition = "0.3s";
+
+        const img = document.createElement("img");
+        img.setAttribute("src", produto.imagem);
+        img.setAttribute("alt", produto.nome);
+        img.style.width = "100%";
+
+        const title = document.createElement("h3");
+        title.textContent = produto.nome;
+
+        const price = document.createElement("p");
+        price.textContent = formatPrice(produto.preco);
+
+        const category = document.createElement("p");
+        category.textContent = "Categoria: " + produto.categoria;
+
+        const btnDetails = document.createElement("button");
+        btnDetails.textContent = "Ver detalhes";
+        btnDetails.addEventListener("click", () => {
+            window.location.href = `detalhes.html?id=${produto.id}`;
+        });
+
+        const btnHighlight = document.createElement("button");
+        btnHighlight.textContent = "Destacar";
+        btnHighlight.addEventListener("click", () => {
+            card.classList.toggle("destaque");
+        });
+
+        card.addEventListener("mouseenter", () => card.style.transform = "scale(1.03)");
+        card.addEventListener("mouseleave", () => card.style.transform = "scale(1)");
+
+        card.appendChild(img);
+        card.appendChild(title);
+        card.appendChild(price);
+        card.appendChild(category);
+        card.appendChild(btnDetails);
+        card.appendChild(btnHighlight);
+
+        return card;
+    }
+
+    function renderProducts(produtos) {
+        productList.innerHTML = "";
+        produtos.forEach(produto => {
+            productList.appendChild(createProductCard(produto));
+        });
+    }
+
+    function renderCategories() {
+        const categorias = ["Todas"];
+        data.produtos.forEach(p => {
+            if (!categorias.includes(p.categoria)) categorias.push(p.categoria);
+        });
+        categorySelect.innerHTML = "";
+        categorias.forEach(cat => {
+            const option = document.createElement("option");
+            option.value = cat;
+            option.textContent = cat;
+            categorySelect.appendChild(option);
+        });
+    }
+
+    function filterProducts() {
+        const texto = searchInput.value.toLowerCase();
+        const categoria = categorySelect.value;
+        return data.produtos.filter(produto => {
+            const matchNome = produto.nome.toLowerCase().includes(texto);
+            const matchCategoria = categoria === "Todas" || produto.categoria === categoria;
+            return matchNome && matchCategoria;
+        });
+    }
+
+    searchInput.addEventListener("input", () => renderProducts(filterProducts()));
+    categorySelect.addEventListener("change", () => renderProducts(filterProducts()));
+    btnRender.addEventListener("click", () => renderProducts(filterProducts()));
+
+    renderCategories();
+    renderProducts(data.produtos);
+}

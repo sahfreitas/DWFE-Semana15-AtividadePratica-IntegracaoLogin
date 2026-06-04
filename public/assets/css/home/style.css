@@ -1,0 +1,14 @@
+.destaque {
+    border: 2px solid #000000 !important;
+}
+
+#product-list {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: .7rem;
+}
+button{
+    border: none;
+    color: aliceblue;
+    background-color: black;
+}
