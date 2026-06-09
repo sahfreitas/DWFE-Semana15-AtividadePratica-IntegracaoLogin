@@ -1,50 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap');
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-.modal {
-    background: #fff;
-    padding: 2rem;
-    border-radius: 5px;
-    width: 300px;
-    border-top: 3px solid #000000;
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: 'DM Sans', sans-serif;
+    background-color: #f4f1ec;
+    background-size: 22px 22px;
 }
 
-.modal h1 {
-    margin-bottom: 1rem;
-    font-size: 1.5rem;
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
-.modal input {
-    width: 100%;
-    margin-bottom: 10px;
-    padding: 8px;
-    outline: none;
-    box-sizing: border-box;
-    border-radius: 3px;
-    border: 1px solid #ccc; 
+header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 1.2rem 2rem;
 }
 
-.modal button {
-    width: 100%;
-    padding: 10px;
-    background: rgb(0, 0, 0);
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    border-radius: 3px;
-    box-sizing: border-box; 
+.logo-mark {
+    width: 28px;
+    height: 28px;
+    background: #1a1a1a;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
 }
 
-.modal button:hover{
-    background-color: #4D4D4D;
-    color: white;
+.logo-mark span {
+    color: #f4f1ec;
+    font-family: 'DM Serif Display', serif;
+    font-size: 16px;
+    line-height: 1;
 }
 
-.modal input:focus {
-    border-color: #aaa;
-    box-shadow: 0 0 0 2px rgba(180, 180, 180, 0.25);
+.titulo {
+    font-size: 14px;
+    font-weight: 500;
+    color: #1a1a1a;
+    letter-spacing: 0.02em;
 }
 
 .overlay {
@@ -52,72 +58,153 @@
     justify-content: center;
     align-items: center;
     flex: 1;
-    padding: 2rem 0;
+    padding: 2rem;
+}
+
+.modal {
+    background: #fff;
+    padding: 2.2rem 2rem;
+    border-radius: 14px;
+    width: 340px;
+    border: 0.5px solid #d6d0c8;
+    box-shadow: 0 2px 24px rgba(0, 0, 0, 0.07);
+}
+
+.modal-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #999;
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+
+.modal h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.75rem;
+    font-weight: 400;
+    color: #1a1a1a;
+    margin-bottom: 1.6rem;
+    line-height: 1.2;
+}
+
+.modal label {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    color: #555;
+    margin-bottom: 5px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.modal input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #e0dbd4;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    color: #1a1a1a;
+    outline: none;
+    margin-bottom: 14px;
+}
+
+.modal input:focus {
+    border-color: #1a1a1a;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.07);
+}
+
+.modal input::placeholder {
+    color: #bbb;
+}
+
+.esqueceu-container {
+    text-align: right;
+    margin-top: -8px;
+    margin-bottom: 16px;
+}
+
+.esqueceu {
+    font-size: 12px;
+    color: #888;
+    text-decoration: none;
+    transition: color 0.15s;
+}
+
+.esqueceu:hover {
+    color: #1a1a1a;
+}
+
+.modal button {
+    width: 100%;
+    padding: 11px;
+    background: #1a1a1a;
+    color: #f4f1ec;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    transition: background 0.18s, transform 0.1s;
+}
+
+.modal button:hover {
+    background: #333;
+}
+
+.modal button:active {
+    transform: scale(0.99);
 }
 
 .divider {
     display: flex;
     align-items: center;
-    margin: 15px 0;
+    gap: 10px;
+    margin: 18px 0;
 }
 
 .divider-line {
     flex: 1;
-    height: 1px;
-    background: #ccc;
+    height: 0.5px;
+    background: #e0dbd4;
 }
 
 .divider-text {
-    margin: 0 10px;
-    color: #666;
-    font-size: 14px;
+    font-size: 12px;
+    color: #bbb;
 }
 
-.esqueceu-container {
-    text-align: right;
-    margin-bottom: 10px;
-}
-
-.esqueceu {
-    font-size: 13px;
-    color: black;
-    text-decoration: none;
-}
-.modal label {
-    display: block;
-    margin-bottom: 4px;
-    font-size: 14px;
-    color: #333;
-}
 .cadastro-link {
     text-align: center;
-    font-size: 14px;
-    color: #555;
+    font-size: 13px;
+    color: #888;
 }
 
 .cadastro-link a {
-    color: #000000;
+    color: #1a1a1a;
+    font-weight: 500;
     text-decoration: none;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 1px;
+    transition: border-color 0.15s;
 }
 
-.container {
-    display: flex;
-    flex-direction: column;
-    min-height: calc(100vh - 3rem); /*altura do footer */
+.cadastro-link a:hover {
+    border-color: #1a1a1a;
 }
-body {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
+
 footer {
-    /* border:  .1rem solid green; */
-    height: 2rem;
-    background-color: #252523;
-    color: #eee;
+    height: 2.5rem;
+    background-color: #1a1a1a;
+    color: #888;
     display: flex;
-    /* justify-content: center; */
-    align-content: center;
     align-items: center;
-    padding: .5rem;
+    padding: 0 1.5rem;
+    font-size: 11px;
+    letter-spacing: 0.06em;
 }
+

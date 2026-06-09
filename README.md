@@ -17,6 +17,13 @@ Personalização do site com Integração de Login de Usuário
 - Tela de Gráfico por Categoria:
 ![Print](Grafico.png)
 
+- Tela de Login:
+![Print](Login.png)
+
+- Tela de Favoritos:
+![Print](Favoritos.png)
+
+
 ## Estrutura do JSON
 
 ```js

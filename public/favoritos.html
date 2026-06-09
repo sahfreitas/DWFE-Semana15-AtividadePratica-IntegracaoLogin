@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gráficos – Meu Ecommerce</title>
+    <title>Meus Favoritos – Meu Ecommerce</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./assets/css/graficos/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/css/favoritos/style.css">
 </head>
 <body>
     <header>
@@ -17,26 +18,24 @@
         </div>
         <nav class="header-nav">
             <a href="./home.html">← Catálogo</a>
-            <a href="./favoritos.html">♡ Favoritos</a>
+            <a href="./graficos.html">Gráficos</a>
         </nav>
     </header>
 
-    <main class="container-fluid px-4 py-4">
+    <main class="container-fluid px-4 py-3">
         <div class="page-title mb-4">
-            <p class="page-eyebrow">Análise</p>
-            <h2 class="page-heading">Gráfico de Produtos</h2>
+            <p class="page-eyebrow">Sua lista</p>
+            <h2 class="page-heading">Meus Favoritos</h2>
         </div>
-        <div class="chart-card">
-            <canvas id="myChart"></canvas>
-        </div>
+
+        <div id="favoritos-list" class="row g-3"></div>
     </main>
 
     <footer>
         <span>© 2026 Meu Site Ecommerce 🎀🧣💄</span>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="./assets/js/app.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="./assets/js/grafico.js"></script>
 </body>
 </html>

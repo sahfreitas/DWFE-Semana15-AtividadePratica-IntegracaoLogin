@@ -75,6 +75,50 @@ const data = {
     ]
 };
 
+function getUsuarioLogado() {
+    const raw = sessionStorage.getItem("usuarioLogado");
+    return raw ? JSON.parse(raw) : null;
+}
+
+function getFavoritosKey(usuario) {
+    return `favoritos_${usuario.id}`;
+}
+
+function getFavoritos(usuario) {
+    const raw = localStorage.getItem(getFavoritosKey(usuario));
+    return raw ? JSON.parse(raw) : [];
+}
+
+function salvarFavoritos(usuario, ids) {
+    localStorage.setItem(getFavoritosKey(usuario), JSON.stringify(ids));
+}
+
+function isFavoritado(usuario, produtoId) {
+    return getFavoritos(usuario).includes(produtoId);
+}
+
+function toggleFavorito(usuario, produtoId) {
+    let favoritos = getFavoritos(usuario);
+    if (favoritos.includes(produtoId)) {
+        favoritos = favoritos.filter(id => id !== produtoId);
+    } else {
+        favoritos.push(produtoId);
+    }
+    salvarFavoritos(usuario, favoritos);
+    return favoritos.includes(produtoId);
+}
+
+
+function heartSVG(filled) {
+    return `
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+        fill="${filled ? '#1a1a1a' : 'none'}"
+        stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+    </svg>`;
+}
+
+
 function formatPrice(preco) {
     return `R$ ${preco.toFixed(2)}`;
 }
@@ -107,58 +151,92 @@ if (productDetails && !document.getElementById("product-list")) {
 const productList = document.getElementById("product-list");
 
 if (productList) {
+    const usuario = getUsuarioLogado();
     const searchInput = document.querySelector("#search");
     const categorySelect = document.querySelector("#category");
     const btnRender = document.getElementById("btnRender");
 
     function createProductCard(produto) {
+        const col = document.createElement("div");
+        col.classList.add("col-6", "col-sm-4", "col-md-3", "col-xl-2");
+
         const card = document.createElement("div");
         card.classList.add("card");
         card.setAttribute("data-id", produto.id);
 
-        card.style.border = "1px solid #ccc";
-        card.style.padding = "10px";
-        card.style.margin = "10px";
-        card.style.width = "200px";
-        card.style.transition = "0.3s";
-
         const img = document.createElement("img");
         img.setAttribute("src", produto.imagem);
         img.setAttribute("alt", produto.nome);
-        img.style.width = "100%";
+
+        const favoritado = usuario ? isFavoritado(usuario, produto.id) : false;
+        const btnFav = document.createElement("button");
+        btnFav.classList.add("btn-fav");
+        btnFav.setAttribute("aria-label", "Favoritar");
+        btnFav.innerHTML = heartSVG(favoritado);
+        if (favoritado) btnFav.classList.add("favoritado");
+
+        btnFav.addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (!usuario) {
+                alert("Você precisa estar logado para favoritar produtos.");
+                window.location.href = "index.html";
+                return;
+            }
+            const agora = toggleFavorito(usuario, produto.id);
+            btnFav.innerHTML = heartSVG(agora);
+            btnFav.classList.toggle("favoritado", agora);
+            card.classList.toggle("card-favoritado", agora);
+        });
+
+        const imgWrapper = document.createElement("div");
+        imgWrapper.classList.add("card-img-wrapper");
+        imgWrapper.appendChild(img);
+        imgWrapper.appendChild(btnFav);
+
+        const body = document.createElement("div");
+        body.classList.add("card-body");
 
         const title = document.createElement("h3");
         title.textContent = produto.nome;
 
         const price = document.createElement("p");
+        price.classList.add("card-price");
         price.textContent = formatPrice(produto.preco);
 
         const category = document.createElement("p");
-        category.textContent = "Categoria: " + produto.categoria;
+        category.classList.add("card-category");
+        category.textContent = produto.categoria;
 
         const btnDetails = document.createElement("button");
+        btnDetails.classList.add("btn-details");
         btnDetails.textContent = "Ver detalhes";
         btnDetails.addEventListener("click", () => {
             window.location.href = `detalhes.html?id=${produto.id}`;
         });
 
         const btnHighlight = document.createElement("button");
+        btnHighlight.classList.add("btn-highlight");
         btnHighlight.textContent = "Destacar";
         btnHighlight.addEventListener("click", () => {
             card.classList.toggle("destaque");
         });
 
-        card.addEventListener("mouseenter", () => card.style.transform = "scale(1.03)");
+        card.addEventListener("mouseenter", () => card.style.transform = "scale(1.02)");
         card.addEventListener("mouseleave", () => card.style.transform = "scale(1)");
 
-        card.appendChild(img);
-        card.appendChild(title);
-        card.appendChild(price);
-        card.appendChild(category);
-        card.appendChild(btnDetails);
-        card.appendChild(btnHighlight);
+        body.appendChild(title);
+        body.appendChild(price);
+        body.appendChild(category);
+        body.appendChild(btnDetails);
+        body.appendChild(btnHighlight);
 
-        return card;
+        card.appendChild(imgWrapper);
+        card.appendChild(body);
+
+        if (favoritado) card.classList.add("card-favoritado");
+
+        col.appendChild(card);
+        return col;
     }
 
     function renderProducts(produtos) {
@@ -198,4 +276,64 @@ if (productList) {
 
     renderCategories();
     renderProducts(data.produtos);
+}
+
+const favoritosList = document.getElementById("favoritos-list");
+
+if (favoritosList) {
+    const usuario = getUsuarioLogado();
+
+    if (!usuario) {
+        favoritosList.innerHTML = `
+            <div class="empty-state">
+                <p>Você precisa estar logado para ver seus favoritos.</p>
+                <a href="index.html" class="btn-details" style="display:inline-block;text-decoration:none;padding:8px 18px;border-radius:8px;">Fazer login</a>
+            </div>`;
+    } else {
+        const ids = getFavoritos(usuario);
+        const produtos = data.produtos.filter(p => ids.includes(p.id));
+
+        if (produtos.length === 0) {
+            favoritosList.innerHTML = `<div class="empty-state"><p>Nenhum favorito ainda. <a href="home.html">Voltar ao catálogo</a></p></div>`;
+        } else {
+            produtos.forEach(produto => {
+                const col = document.createElement("div");
+                col.classList.add("col-6", "col-sm-4", "col-md-3", "col-xl-2");
+
+                col.innerHTML = `
+                    <div class="card card-favoritado" data-id="${produto.id}">
+                        <div class="card-img-wrapper">
+                            <img src="${produto.imagem}" alt="${produto.nome}">
+                            <button class="btn-fav favoritado" aria-label="Remover dos favoritos">
+                                ${heartSVG(true)}
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <h3>${produto.nome}</h3>
+                            <p class="card-price">${formatPrice(produto.preco)}</p>
+                            <p class="card-category">${produto.categoria}</p>
+                            <button class="btn-details" onclick="window.location.href='detalhes.html?id=${produto.id}'">Ver detalhes</button>
+                            <button class="btn-highlight btn-remover-fav">Remover</button>
+                        </div>
+                    </div>`;
+
+                const card = col.querySelector(".card");
+                const btnFav = col.querySelector(".btn-fav");
+                const btnRemover = col.querySelector(".btn-remover-fav");
+
+                function remover() {
+                    toggleFavorito(usuario, produto.id);
+                    col.remove();
+                    if (favoritosList.children.length === 0) {
+                        favoritosList.innerHTML = `<div class="empty-state"><p>Nenhum favorito ainda. <a href="home.html">Voltar ao catálogo</a></p></div>`;
+                    }
+                }
+
+                btnFav.addEventListener("click", remover);
+                btnRemover.addEventListener("click", remover);
+
+                favoritosList.appendChild(col);
+            });
+        }
+    }
 }

@@ -1,39 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./assets/css/login/style.css">
     <script src="./assets/js/login.js" type="module"></script>
 </head>
 <body>
     <div class="container">
         <header>
+            <div class="logo-mark"><span>M</span></div>
             <h1 class="titulo">Meu site Ecommerce</h1>
         </header>
+
         <div class="overlay">
             <section class="modal">
-                <h1>Login</h1>
+                <p class="modal-eyebrow">Bem-vindo de volta</p>
+                <h1>Entrar</h1>
+
                 <form>
-                    <label>Usuario</label>
-                    <input id="username" type="text" placeholder="Informe seu usuário">
-                    <label>Senha</label>
-                    <input id="senha" type="password" placeholder="Informe sua senha">
+                    <label for="username">Usuário</label>
+                    <input id="username" type="text" placeholder="seu@email.com">
+
+                    <label for="senha">Senha</label>
+                    <input id="senha" type="password" placeholder="••••••••">
+
                     <p class="esqueceu-container">
                         <a href="#" class="esqueceu">Esqueceu sua senha?</a>
                     </p>
-                    <button>Entrar</button>
+
+                    <button type="submit">Entrar</button>
 
                     <div class="divider">
                         <div class="divider-line"></div>
                         <span class="divider-text">ou</span>
                         <div class="divider-line"></div>
                     </div>
+
                     <p class="cadastro-link">Não tem conta? <a href="">Cadastre-se</a></p>
                 </form>
             </section>
         </div>
+
+        <footer>
+            <span>©MeuSiteEcommerce🎀🧣💄</span>
+        </footer>
     </div>
 </body>
 </html>
